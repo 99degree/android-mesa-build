@@ -74,12 +74,12 @@ jobs:
             -Dandroid-strict=false \
             -Dxlib-lease=disabled \
             -Degl=disabled \
-            -Dgbm=disabled \
+            -Dgbm=true \
             -Dglx=disabled \
             -Dllvm=disabled \
             -Dopengl=true \
             -Dosmesa=true \
-            -Dvulkan-drivers= \
+            -Dvulkan-drivers=true \
             -Dtools=drm-shim \
             -Dgallium-drivers=zink,freedreno \
             -Dfreedreno-kmds=kgsl,msm \
