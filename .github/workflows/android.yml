@@ -71,7 +71,7 @@ jobs:
           cd ..
           
           cd minigbm
-          OUT=/tmp/minigbm/output ARCH=arm64 CC=aarch64-linux-gnu-gcc make || true
+          OUT=/tmp/minigbm/output ARCH=arm64 CC=aarch64-linux-android-clang make || true
           find /tmp/minigbm -name "libminigbm*" -exec cp {} /tmp/minigbm \; || true
           cd ..
           
