@@ -46,7 +46,7 @@ jobs:
           git fetch 99degree local-mesa-25.1.8
           git merge 99degree/local-mesa-25.1.8
           #local-mesa-25.1.8
-          #cd ..
+          cd ..
           echo "Ready!!!"
 
       - name: Build
