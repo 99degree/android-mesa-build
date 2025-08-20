@@ -41,7 +41,7 @@ jobs:
           echo "Get Mesa Repository ..."
           git clone https://gitlab.freedesktop.org/mesa/drm.git
           git clone --depth 1 --branch mesa-25.1.8 https://gitlab.freedesktop.org/mesa/mesa.git
-          git clone --depth 1 --branch master https://github.com/Vera-Firefly/mesa-build-fix.git
+          git clone --depth 1 --branch master https://github.com/99degree/mesa-build-fix.git
           echo "Extracting Build Fix to Mesa Repository ..."
           cp -rf mesa-build-fix/* mesa/
           echo "Ready!!!"
