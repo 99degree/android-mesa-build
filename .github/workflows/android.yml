@@ -79,11 +79,11 @@ jobs:
             -Dandroid-libbacktrace=disabled \
             -Dandroid-strict=false \
             -Dxlib-lease=disabled \
-            -Degl=false \
+            -Degl=true \
             -Dgbm=false \
             -Dglx=disabled \
             -Dllvm=false \
-            -Dopengl=false \
+            -Dopengl=true \
             -Dgles1=true \
             -Dgles2=true \
             -Dvulkan-drivers=freedreno \
