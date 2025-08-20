@@ -47,6 +47,7 @@ jobs:
           git merge 99degree/local-mesa-25.1.8
           #local-mesa-25.1.8
           cd ..
+          git clone --depth 1 https://android.googlesource.com/platform/external/minigbm 
           echo "Ready!!!"
 
       - name: Build
@@ -68,6 +69,12 @@ jobs:
             -Dfreedreno-kgsl=true
           ninja -C "build-android" install
           cd ..
+          
+          cd minigbm
+          OUT=/tmp/minigbm/output ARCH=arm64 CC=aarch64-linux-gnu-gcc make || true
+          find /tmp/minigbm -name "libminigbm*" -exec cp {} /tmp/minigbm \; || true
+          cd ..
+          
           envsubst <android-${{matrix.arch}}>build-crossfile
           cd mesa
           meson setup "build-android" \
@@ -117,3 +124,9 @@ jobs:
         with:
           name: Noop_drm_shim_${{matrix.arch}}
           path: /tmp/mesa/drm_shim/*
+          
+      - name: Upload minigbm libraries
+        uses: actions/upload-artifact@v4
+        with:
+          name: minigbm_${{matrix.arch}}
+          path: /tmp/minigbm/libminig*
