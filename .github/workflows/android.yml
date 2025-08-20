@@ -78,11 +78,11 @@ jobs:
             -Dgbm=true \
             -Dglx=disabled \
             -Dllvm=disabled \
-            -Dopengl=true \
+            -Dopengl=disabled \
             -Dosmesa=true \
             -Dvulkan-drivers=auto \
             -Dtools=drm-shim \
-            -Dgallium-drivers=zink,freedreno \
+            -Dgallium-drivers=freedreno \
             -Dfreedreno-kmds=kgsl,msm \
             -Dbuildtype=release
           ninja -C "build-android" install
