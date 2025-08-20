@@ -76,7 +76,7 @@ jobs:
             -Dxlib-lease=disabled \
             -Degl=false \
             -Dgbm=true \
-            -Dglx=false \
+            -Dglx=disabled \
             -Dllvm=false \
             -Dopengl=false \
             -Dosmesa=true \
