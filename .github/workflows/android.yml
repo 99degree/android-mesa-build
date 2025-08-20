@@ -42,7 +42,7 @@ jobs:
           git clone https://gitlab.freedesktop.org/mesa/drm.git
           git clone --depth 1 --branch mesa-25.1.8 https://gitlab.freedesktop.org/mesa/mesa.git
           cd mesa
-          git remote add 99degree https://github.com/99degree/mesa-build-fix.git
+          git remote add 99degree https://github.com/99degree/mesa.git
           git fetch 99degree local-mesa-25.1.8
           git merge local-mesa-25.1.8
           cd ..
