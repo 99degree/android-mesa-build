@@ -79,7 +79,7 @@ jobs:
             -Dllvm=disabled \
             -Dopengl=true \
             -Dosmesa=true \
-            -Dvulkan-drivers=true \
+            -Dvulkan-drivers=auto \
             -Dtools=drm-shim \
             -Dgallium-drivers=zink,freedreno \
             -Dfreedreno-kmds=kgsl,msm \
