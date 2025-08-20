@@ -81,7 +81,7 @@ jobs:
             -Dglx=disabled \
             -Dllvm=false \
             -Dopengl=false \
-            -Dvulkan-drivers=auto \
+            -Dvulkan-drivers=freedreno \
             -Dtools=drm-shim \
             -Dgallium-drivers=freedreno \
             -Dfreedreno-kmds=msm \
