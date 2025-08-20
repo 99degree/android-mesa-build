@@ -87,6 +87,7 @@ jobs:
             -Dfreedreno-kmds=msm \
             -Dmesa-clc=auto \
             -Dgallium-opencl=disabled \
+            -Dgallium-rusticl=false \
             -Dbuildtype=release
           ninja -C "build-android" install
           mkdir /tmp/mesa/output
