@@ -71,7 +71,7 @@ jobs:
           cd ..
           
           cd minigbm
-          OUT=/tmp/minigbm/output ARCH=arm64 CC='${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/bin'/aarch64-linux-android-clang make || true
+          OUT=/tmp/minigbm/output ARCH=arm64 CC='${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android${SDK_VER}-clang' make || true
           find /tmp/minigbm -name "libminigbm*" -exec cp {} /tmp/minigbm \; || true
           cd ..
           
