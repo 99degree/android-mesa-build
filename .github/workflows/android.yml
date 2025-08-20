@@ -84,6 +84,8 @@ jobs:
             -Dglx=disabled \
             -Dllvm=false \
             -Dopengl=false \
+            -Dgles1=true \
+            -Dgles2=true \
             -Dvulkan-drivers=freedreno \
             -Dtools=drm-shim \
             -Dgallium-drivers=zink,freedreno \
