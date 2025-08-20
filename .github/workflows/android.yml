@@ -77,7 +77,7 @@ jobs:
             -Dandroid-strict=false \
             -Dxlib-lease=disabled \
             -Degl=false \
-            -Dgbm=true \
+            -Dgbm=false \
             -Dglx=disabled \
             -Dllvm=false \
             -Dopengl=false \
