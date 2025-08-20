@@ -2,7 +2,9 @@ name: Build Android
 
 on:
   workflow_dispatch:
-
+  push:
+    branches:
+      - master 
 jobs:
   build:
     strategy:
@@ -79,11 +81,10 @@ jobs:
             -Dglx=disabled \
             -Dllvm=false \
             -Dopengl=false \
-            -Dosmesa=true \
             -Dvulkan-drivers=auto \
             -Dtools=drm-shim \
             -Dgallium-drivers=freedreno \
-            -Dfreedreno-kmds=kgsl,msm \
+            -Dfreedreno-kmds=msm \
             -Dmesa-clc=auto \
             -Dgallium-opencl=disabled \
             -Dbuildtype=release
