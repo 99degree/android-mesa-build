@@ -48,6 +48,11 @@ jobs:
           #local-mesa-25.1.8
           cd ..
           git clone --depth 1 https://android.googlesource.com/platform/external/minigbm 
+          cd minigbm
+          git remote add 99degree https://github.com/99degree/minigbm.git
+          git fetch 99degree local-main
+          git merge 99degree/local-main
+          cd ..
           echo "Ready!!!"
 
       - name: Build
@@ -71,7 +76,7 @@ jobs:
           cd ..
           
           cd minigbm
-          OUT=/tmp/minigbm/output ARCH=arm64 LDFLAGS=-L/tmp/drm-static/lib/ CFLAGS=-I/tmp/drm-static/include CC='${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android${SDK_VER}-clang' make || true
+          OUT=/tmp/minigbm/output ARCH=arm64 LDFLAGS=-L/tmp/drm-static/lib/ CFLAGS='-I/tmp/drm-static/include -I'${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/ bin' CC='${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android${SDK_VER}-clang' make || true
           find /tmp/minigbm -name "libminigbm*" -exec cp {} /tmp/minigbm \; || true
           cd ..
           
