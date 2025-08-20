@@ -44,7 +44,8 @@ jobs:
           cd mesa
           git remote add 99degree https://github.com/99degree/mesa.git
           git fetch 99degree local-mesa-25.1.8
-          git merge local-mesa-25.1.8
+          git merge 99degree/local-mesa-25.1.8
+          #local-mesa-25.1.8
           cd ..
           echo "Extracting Build Fix to Mesa Repository ..."
           cp -rf mesa-build-fix/* mesa/
