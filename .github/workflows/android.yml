@@ -40,8 +40,10 @@ jobs:
           unzip ${NDK_VER}-linux.zip &> /dev/null
           echo "Get Mesa Repository ..."
           git clone https://gitlab.freedesktop.org/mesa/drm.git
-          git clone --depth 1 --branch mesa-25.1.4 https://gitlab.freedesktop.org/mesa/mesa.git
-          git clone --depth 1 --branch master https://github.com/99degree/mesa-build-fix.git
+          git clone --depth 1 --branch mesa-25.1.8 https://gitlab.freedesktop.org/mesa/mesa.git
+          git remote add 99degree https://github.com/99degree/mesa-build-fix.git
+          git fetch 99degree local-mesa-25.1.8
+          git merge local-mesa-25.1.8
           echo "Extracting Build Fix to Mesa Repository ..."
           cp -rf mesa-build-fix/* mesa/
           echo "Ready!!!"
@@ -83,7 +85,7 @@ jobs:
             -Dopengl=false \
             -Dvulkan-drivers=freedreno \
             -Dtools=drm-shim \
-            -Dgallium-drivers=freedreno \
+            -Dgallium-drivers=zink,freedreno \
             -Dfreedreno-kmds=msm \
             -Dmesa-clc=auto \
             -Dgallium-opencl=disabled \
