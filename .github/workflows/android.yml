@@ -47,8 +47,6 @@ jobs:
           git merge 99degree/local-mesa-25.1.8
           #local-mesa-25.1.8
           cd ..
-          echo "Extracting Build Fix to Mesa Repository ..."
-          cp -rf mesa-build-fix/* mesa/
           echo "Ready!!!"
 
       - name: Build
