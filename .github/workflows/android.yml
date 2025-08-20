@@ -23,7 +23,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt-get install -y libxrandr-dev libxxf86vm-dev libxcb-*-dev libx11-xcb-dev libxfixes-dev libdrm-dev libx11-dev
-          sudo apt-get install glslang-tools libclc-18-dev libclc-18
+          sudo apt-get install glslang-tools libclc-18-dev libclc-18 gcc-13-aarch64-linux-gnu
           pip3 install mako meson ninja
 
       - name: Set ndkver,sdkver and work_dir
