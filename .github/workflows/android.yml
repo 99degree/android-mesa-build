@@ -74,11 +74,11 @@ jobs:
             -Dandroid-libbacktrace=disabled \
             -Dandroid-strict=false \
             -Dxlib-lease=disabled \
-            -Degl=disabled \
+            -Degl=false \
             -Dgbm=true \
-            -Dglx=disabled \
-            -Dllvm=disabled \
-            -Dopengl=disabled \
+            -Dglx=false \
+            -Dllvm=false \
+            -Dopengl=false \
             -Dosmesa=true \
             -Dvulkan-drivers=auto \
             -Dtools=drm-shim \
