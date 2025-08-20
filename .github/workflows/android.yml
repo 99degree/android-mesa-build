@@ -80,7 +80,7 @@ jobs:
           OUT='/tmp/minigbm/output' \
           LDFLAGS='-L/tmp/drm-static/lib/' \
           ARCH=arm64 \
-          CFLAGS='-D__ANDROID__ -I/tmp/drm-static/include -I${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/ -I${WORK_DIR}/core/libcutils/include_outside_system/' \
+          CFLAGS='-DDRV_MSM -D__ANDROID__ -I/tmp/drm-static/include -I${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/ -I${WORK_DIR}/core/libcutils/include_outside_system/' \
           CC='${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android${SDK_VER}-clang' make || true      
           find /tmp/minigbm -name "libminigbm*" -exec cp {} /tmp/minigbm \; || true
           cd ..
