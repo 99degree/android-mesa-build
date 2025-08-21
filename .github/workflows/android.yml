@@ -105,7 +105,7 @@ jobs:
             -Dgles2=true \
             -Dvulkan-drivers=freedreno \
             -Dtools=drm-shim \
-            -Dgallium-drivers=zink,freedreno,kmsro \
+            -Dgallium-drivers=zink,freedreno \
             -Dfreedreno-kmds=msm \
             -Dmesa-clc=auto \
             -Dgallium-opencl=disabled \
