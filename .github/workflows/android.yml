@@ -81,7 +81,8 @@ jobs:
             -Dfreedreno-kgsl=true
           ninja -C "build-android" install
           cd ..
-          
+
+          envsubst <android-${{matrix.arch}}>build-crossfile
           cd minigbm
           #OUT='/tmp/minigbm/output' \
           #LDFLAGS='-L/tmp/drm-static/lib/' \
