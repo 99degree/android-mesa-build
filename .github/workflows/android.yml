@@ -40,10 +40,10 @@ jobs:
           unzip ${NDK_VER}-linux.zip &> /dev/null
           echo "Cloing vndk v34..."
           git clone -b sdk-release --depth=1 https://android.googlesource.com/platform/prebuilts/vndk/v34 || true
-          mkdir -p ${WORK_DIR}/${NDK_VER}/prebuilt/vndk
+          mkdir -p ${WORK_DIR}/${NDK_VER}/prebuilt/vndk/
           cp -r v34 ${WORK_DIR}/${NDK_VER}/prebuilt/vndk/
           ls ${WORK_DIR}/${NDK_VER}/prebuilt/vndk
-          ${WORK_DIR}/${NDK_VER}/prebuilt/vndk/v34/
+          ls ${WORK_DIR}/${NDK_VER}/prebuilt/vndk/v34/
           echo "Get Mesa Repository ..."
           git clone https://gitlab.freedesktop.org/mesa/drm.git
           git clone --depth 1 --branch mesa-25.1.8 https://gitlab.freedesktop.org/mesa/mesa.git
