@@ -88,8 +88,12 @@ jobs:
           #ARCH=arm64 \
           #CFLAGS='-DDRV_MSM -D__ANDROID__ -I/tmp/drm-static/include -I${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/ -I${WORK_DIR}/core/libcutils/include_outside_system/' \
           #CC='${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android${SDK_VER}-clang' make || true      
-          meson setup build-android --prefix=/tmp/minigbm -Dndk_include=${WORK_DIR}/${NDK_VER} -Dextra_include=/tmp/drm-static/ --cross-file android-aarch64 || true
-          ninja -C build-android install || true
+          meson setup build-android 
+            --prefix=/tmp/minigbm 
+            -Dndk_include=${WORK_DIR}/${NDK_VER} 
+            -Dextra_include=/tmp/drm-static/ 
+            --cross-file ../build-crossfile
+          ninja -C build-android install
           #find /tmp/minigbm -name "libminigbm*" -exec cp {} /tmp/minigbm \; || true
           cd ..
           
