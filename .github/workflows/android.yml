@@ -28,7 +28,8 @@ jobs:
 
       - name: Set ndkver,sdkver and work_dir
         run: |
-          echo "NDK_VER=android-ndk-r27c" >> $GITHUB_ENV
+          # to support Android 14+ r27d is needed.
+          echo "NDK_VER=android-ndk-r27d" >> $GITHUB_ENV
           echo "SDK_VER=29" >> $GITHUB_ENV
           echo "WORK_DIR=$(pwd)" >> $GITHUB_ENV
 
@@ -82,18 +83,21 @@ jobs:
           ninja -C "build-android" install
           cd ..
 
-          envsubst <android-${{matrix.arch}}>build-crossfile
+          envsubst <android-${{matrix.arch}}-vndk34>build-crossfile-vndk34
           cd minigbm
+          # Makefile method is not useded here, meson instead.
           #OUT='/tmp/minigbm/output' \
           #LDFLAGS='-L/tmp/drm-static/lib/' \
           #ARCH=arm64 \
           #CFLAGS='-DDRV_MSM -D__ANDROID__ -I/tmp/drm-static/include -I${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/ -I${WORK_DIR}/core/libcutils/include_outside_system/' \
-          #CC='${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android${SDK_VER}-clang' make || true      
+          #CC='${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android34-clang' make || true      
+          #
+          # Use meson!!!
           meson setup build-android \
             --prefix=/tmp/minigbm \
             -Dndk_include=${WORK_DIR}/${NDK_VER} \
             -Dextra_include=/tmp/drm-static/ \
-            --cross-file ../build-crossfile
+            --cross-file ../build-crossfile-vndk34
           ninja -C build-android install
           #find /tmp/minigbm -name "libminigbm*" -exec cp {} /tmp/minigbm \; || true
           cd ..
