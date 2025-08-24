@@ -38,6 +38,12 @@ jobs:
           curl https://dl.google.com/android/repository/${NDK_VER}-linux.zip --output ${NDK_VER}-linux.zip &> /dev/null
           echo "Extracting android-ndk to a folder ..."
           unzip ${NDK_VER}-linux.zip &> /dev/null
+          echo "Cloing vndk v34..."
+          git clone -b sdk-release --depth=1 https://android.googlesource.com/platform/prebuilts/vndk/v34 || true
+          mkdir -p ${WORK_DIR}/${NDK_VER}/prebuilt/vndk
+          cp -r v34 ${WORK_DIR}/${NDK_VER}/prebuilt/vndk/
+          ls ${WORK_DIR}/${NDK_VER}/prebuilt/vndk
+          ${WORK_DIR}/${NDK_VER}/prebuilt/vndk/v34/
           echo "Get Mesa Repository ..."
           git clone https://gitlab.freedesktop.org/mesa/drm.git
           git clone --depth 1 --branch mesa-25.1.8 https://gitlab.freedesktop.org/mesa/mesa.git
@@ -77,12 +83,14 @@ jobs:
           cd ..
           
           cd minigbm
-          OUT='/tmp/minigbm/output' \
-          LDFLAGS='-L/tmp/drm-static/lib/' \
-          ARCH=arm64 \
-          CFLAGS='-DDRV_MSM -D__ANDROID__ -I/tmp/drm-static/include -I${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/ -I${WORK_DIR}/core/libcutils/include_outside_system/' \
-          CC='${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android${SDK_VER}-clang' make || true      
-          find /tmp/minigbm -name "libminigbm*" -exec cp {} /tmp/minigbm \; || true
+          #OUT='/tmp/minigbm/output' \
+          #LDFLAGS='-L/tmp/drm-static/lib/' \
+          #ARCH=arm64 \
+          #CFLAGS='-DDRV_MSM -D__ANDROID__ -I/tmp/drm-static/include -I${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/ -I${WORK_DIR}/core/libcutils/include_outside_system/' \
+          #CC='${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android${SDK_VER}-clang' make || true      
+          meson setup build-android --prefix=/tmp/minigbm -Dextra_include=/tmp/drm-static/ --cross-file android-aarch64 || true
+          ninja -C build-android install || true
+          #find /tmp/minigbm -name "libminigbm*" -exec cp {} /tmp/minigbm \; || true
           cd ..
           
           envsubst <android-${{matrix.arch}}>build-crossfile
@@ -139,4 +147,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: minigbm_${{matrix.arch}}
-          path: /tmp/minigbm/libminig*
+          path: /tmp/minigbm/*.so
