@@ -156,4 +156,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: minigbm_${{matrix.arch}}
-          path: /tmp/minigbm/*.so
+          path: /tmp/minigbm/lib/*.so
