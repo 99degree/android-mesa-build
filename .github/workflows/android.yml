@@ -107,6 +107,7 @@ jobs:
             -Dndk_root=${WORK_DIR}/${NDK_VER} \
             --cross-file ../build-crossfile \
             --force-fallback-for=libdrm \
+            -Dlibdrm:default_library=static
             -Dlibdrm:freedreno-kgsl=true \
             -Dlibdrm:intel=auto \
             -Dlibdrm:radeon=auto \
@@ -131,6 +132,7 @@ jobs:
             --prefix=/tmp/mesa \
             --cross-file "../build-crossfile" \
             -Dallow-fallback-for=libdrm \
+            -Dlibdrm:default_library=static
             -Dplatforms=android \
             -Dplatform-sdk-version=34 \
             -Dandroid-stub=true \
