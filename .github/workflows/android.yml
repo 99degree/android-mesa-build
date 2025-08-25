@@ -22,7 +22,7 @@ jobs:
       - name: Set Up Environment
         run: |
           sudo apt update
-          sudo apt-get install -y libxrandr-dev libxxf86vm-dev libxcb-*-dev libx11-xcb-dev libxfixes-dev libdrm-dev libx11-dev
+          sudo apt-get install -y libxrandr-dev libxxf86vm-dev libxcb-*-dev libx11-xcb-dev libxfixes-dev libx11-dev
           sudo apt-get install glslang-tools libclc-18-dev libclc-18 gcc-13-aarch64-linux-gnu
           pip3 install mako meson ninja
 
@@ -32,6 +32,7 @@ jobs:
           echo "NDK_VER=android-ndk-r27d" >> $GITHUB_ENV
           echo "SDK_VER=29" >> $GITHUB_ENV
           echo "WORK_DIR=$(pwd)" >> $GITHUB_ENV
+          echo "MESA_VER=mesa-25.2.1" >> $GITHUB_ENV
 
       - name: Download and extract NDK/Mesa
         run: |
@@ -46,13 +47,19 @@ jobs:
           ls ${WORK_DIR}/${NDK_VER}/prebuilt/vndk
           ls ${WORK_DIR}/${NDK_VER}/prebuilt/vndk/v34/
           echo "Get Mesa Repository ..."
-          git clone https://gitlab.freedesktop.org/mesa/drm.git
-          git clone --depth 1 --branch mesa-25.1.8 https://gitlab.freedesktop.org/mesa/mesa.git
+          #
+          # it is very annoying to deal with static build libdrm and host libdrm conflict
+          # so from now on dont use pkgconfig any more and do not manually compile libdrm.
+          # minigbm and mesa will do its job by compile as subproject and link with it.
+          # the trade off is libdrm need compile 2 times.
+          #
+          #git clone https://gitlab.freedesktop.org/mesa/drm.git
+          git clone --depth 1 --branch ${MESA_VER} https://gitlab.freedesktop.org/mesa/mesa.git
           cd mesa
           git remote add 99degree https://github.com/99degree/mesa.git
-          git fetch 99degree local-mesa-25.1.8
-          git merge 99degree/local-mesa-25.1.8
-          #local-mesa-25.1.8
+          git fetch 99degree local-${MESA_VER}
+          git merge 99degree/local-${MESA_VER}
+
           cd ..
           git clone --depth 1 https://android.googlesource.com/platform/external/minigbm 
           cd minigbm
@@ -65,25 +72,25 @@ jobs:
 
       - name: Build
         run: |
-          envsubst <android-drm-${{matrix.arch}}>build-crossfile-drm
-          cd drm
-          meson setup "build-android" \
-            --prefix=/tmp/drm-static \
-            --cross-file "../build-crossfile-drm" \
-            -Ddefault_library=static \
-            -Dintel=disabled \
-            -Dradeon=disabled \
-            -Damdgpu=disabled \
-            -Dnouveau=disabled \
-            -Dvmwgfx=disabled \
-            -Dfreedreno=enabled \
-            -Dvc4=disabled \
-            -Detnaviv=disabled \
-            -Dfreedreno-kgsl=true
-          ninja -C "build-android" install
-          cd ..
+          envsubst <android-${{matrix.arch}}>build-crossfile
+          #cd drm
+          #meson setup "build-android" \
+          #  --prefix=/tmp/drm-static \
+          #  --cross-file "../build-crossfile-drm" \
+          #  -Ddefault_library=static \
+          #  -Dintel=disabled \
+          #  -Dradeon=disabled \
+          #  -Damdgpu=disabled \
+          #  -Dnouveau=disabled \
+          #  -Dvmwgfx=disabled \
+          #  -Dfreedreno=enabled \
+          #  -Dvc4=disabled \
+          #  -Detnaviv=disabled \
+          #  -Dfreedreno-kgsl=true
+          #ninja -C "build-android" install
+          #cd ..
 
-          envsubst <android-${{matrix.arch}}-vndk34>build-crossfile-vndk34
+          envsubst <android-${{matrix.arch}}-vndk34>build-crossfile
           cd minigbm
           # Makefile method is not useded here, meson instead.
           #OUT='/tmp/minigbm/output' \
@@ -93,22 +100,38 @@ jobs:
           #CC='${WORK_DIR}/${NDK_VER}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android34-clang' make || true      
           #
           # Use meson!!!
+          # a nice plus is build libdrm as many backend as possible
+          #
           meson setup build-android \
             --prefix=/tmp/minigbm \
-            -Dndk_include=${WORK_DIR}/${NDK_VER} \
-            -Dextra_include=/tmp/drm-static/ \
-            --cross-file ../build-crossfile-vndk34
+            -Dndk_root=${WORK_DIR}/${NDK_VER} \
+            --cross-file ../build-crossfile \
+            --force-fallback-for=libdrm \
+            -Ddefault_library=static \
+            -Dlibdrm:freedreno-kgsl=true \
+            -Dlibdrm:intel=auto \
+            -Dlibdrm:radeon=auto \
+            -Dlibdrm:amdgpu=auto \
+            -Dlibdrm:nouveau=auto \
+            -Dlibdrm:vmwgfx=enabled \
+            -Dlibdrm:omap=enabled \
+            -Dlibdrm:freedreno=enabled \
+            -Dlibdrm:tegra=enabled \
+            -Dlibdrm:etnaviv=enabled \
+            -Dlibdrm:exynos=enabled \
+            -Dlibdrm:vc4=enabled 
           ninja -C build-android install
           #find /tmp/minigbm -name "libminigbm*" -exec cp {} /tmp/minigbm \; || true
           cd ..
           
-          envsubst <android-${{matrix.arch}}>build-crossfile
+          #envsubst <android-${{matrix.arch}}>build-crossfile
           cd mesa
           meson setup "build-android" \
             --prefix=/tmp/mesa \
             --cross-file "../build-crossfile" \
+            -Dallow-fallback-for=libdrm \
             -Dplatforms=android \
-            -Dplatform-sdk-version=33 \
+            -Dplatform-sdk-version=34 \
             -Dandroid-stub=true \
             -Dandroid-libbacktrace=disabled \
             -Dandroid-strict=false \
@@ -123,11 +146,12 @@ jobs:
             -Dvulkan-drivers=freedreno \
             -Dtools=drm-shim \
             -Dgallium-drivers=zink,freedreno \
-            -Dfreedreno-kmds=msm \
+            -Dfreedreno-kmds=kgsl,msm \
             -Dmesa-clc=auto \
-            -Dgallium-opencl=disabled \
-            -Dgallium-rusticl=false \
             -Dbuildtype=release
+            #-Dgallium-opencl=disabled \
+            #-Dgallium-rusticl=false \
+
           ninja -C "build-android" install
           mkdir /tmp/mesa/output
           mkdir /tmp/mesa/drm_shim
