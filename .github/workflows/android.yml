@@ -90,7 +90,7 @@ jobs:
           #ninja -C "build-android" install
           #cd ..
 
-          envsubst <android-${{matrix.arch}}-vndk34>build-crossfile
+          envsubst <android-${{matrix.arch}}>build-crossfile
           cd minigbm
           # Makefile method is not useded here, meson instead.
           #OUT='/tmp/minigbm/output' \
