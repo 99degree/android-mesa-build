@@ -30,7 +30,7 @@ jobs:
         run: |
           # to support Android 14+ r27d is needed.
           echo "NDK_VER=android-ndk-r27d" >> $GITHUB_ENV
-          echo "SDK_VER=29" >> $GITHUB_ENV
+          #echo "SDK_VER=29" >> $GITHUB_ENV
           echo "WORK_DIR=$(pwd)" >> $GITHUB_ENV
           echo "MESA_VER=mesa-25.2.1" >> $GITHUB_ENV
 
