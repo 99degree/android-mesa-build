@@ -1,6 +1,6 @@
 [constants]
 # Path to your Android NDK root
-ndk_root = '/usr/android-ndk-r27d'
+#ndk_root = '/usr/android-ndk-r27d'
 
 # Convenience variables
 #NDK     = ndk_root / 'toolchains/llvm/prebuilt/linux-x86_64/bin'
@@ -8,6 +8,7 @@ SDK_VER = '34'  # Android API level
 
 # Override with github var
 NDK     = '${WORK_DIR}/${NDK_VER}' / 'toolchains/llvm/prebuilt/linux-x86_64/bin'
+ndk_root = '${WORK_DIR}/${NDK_VER}'
 
 [binaries]
 c         = NDK / ('aarch64-linux-android' + SDK_VER + '-clang')
