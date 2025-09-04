@@ -32,7 +32,8 @@ jobs:
           echo "NDK_VER=android-ndk-r27d" >> $GITHUB_ENV
           #echo "SDK_VER=29" >> $GITHUB_ENV
           echo "WORK_DIR=$(pwd)" >> $GITHUB_ENV
-          echo "MESA_VER=mesa-25.2.1" >> $GITHUB_ENV
+          echo "MESA_VER=mesa-25.2.2" >> $GITHUB_ENV
+          echo "MINIGBM_VER=minigbm-aosp-20250326b" >> $GITHUB_ENV
 
       - name: Download and extract NDK/Mesa
         run: |
@@ -64,8 +65,8 @@ jobs:
           git clone --depth 1 https://android.googlesource.com/platform/external/minigbm 
           cd minigbm
           git remote add 99degree https://github.com/99degree/minigbm.git
-          git fetch 99degree local-main
-          git merge 99degree/local-main
+          git fetch 99degree ${MINIGBM_VER}
+          git merge 99degree/${MINIGBM_VER}
           cd ..
           git clone --depth 1 https://android.googlesource.com/platform/system/core
           echo "Ready!!!"
@@ -183,4 +184,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: minigbm_${{matrix.arch}}
-          path: /tmp/minigbm/lib/*.so
+          path: /tmp/minigbm/*
