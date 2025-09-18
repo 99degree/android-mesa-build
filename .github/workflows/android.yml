@@ -62,7 +62,7 @@ jobs:
           git merge 99degree/local-${MESA_VER}
 
           cd ..
-          git clone --depth 1 https://android.googlesource.com/platform/external/minigbm 
+          git clone --depth 1 https://android.googlesource.com/platform/external/minigbm -b upstream-main
           cd minigbm
           git remote add 99degree https://github.com/99degree/minigbm.git
           git fetch 99degree ${MINIGBM_VER}
