@@ -33,7 +33,7 @@ jobs:
           #echo "SDK_VER=34" >> $GITHUB_ENV
           echo "WORK_DIR=$(pwd)" >> $GITHUB_ENV
           echo "MESA_VER=mesa-25.2.3" >> $GITHUB_ENV
-          echo "MINIGBM_VER=minigbm-aosp-20250918" >> $GITHUB_ENV
+          echo "MINIGBM_VER=minigbm-aosp-20250326c" >> $GITHUB_ENV
 
       - name: Download and extract NDK/Mesa
         run: |
@@ -62,7 +62,7 @@ jobs:
           git merge 99degree/local-${MESA_VER}
 
           cd ..
-          git clone --depth 1 https://android.googlesource.com/platform/external/minigbm -b upstream-main
+          git clone --depth 1 https://android.googlesource.com/platform/external/minigbm
           cd minigbm
           git remote add 99degree https://github.com/99degree/minigbm.git
           git fetch 99degree ${MINIGBM_VER}
